@@ -106,15 +106,15 @@ export default function Home() {
         </Stack>
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          alignItems={{ xs: "flex-start", sm: "center" }}
-          columnGap={"2vw"}
+          alignItems={ "center" }
+          gap={"2vw"}
           // minHeight={"800px"}
           height="90vh"
         >
-          <Box width="100%" maxWidth="46vw">
+          <Box width="100%" maxWidth={{sm:"46vw"}}>
             <Editor
               height="90vh"
-              defaultValue="// some comment"
+              defaultValue="#some comment"
               {...config}
               onChange={(value) => setCode(`${value}`)}
             />
@@ -130,7 +130,7 @@ export default function Home() {
             </IconButton>
           </Box>
 
-          <Stack height="90vh" rowGap={"1vmax"} width="100%" maxWidth="46vw">
+          <Stack height="90vh" rowGap={"1vmax"} width="100%" maxWidth={{sm:"46vw"}}>
             <Box flexGrow={1} p={"1em"} border="0.01em solid black">
               <Typography fontWeight="600" fontSize={"1.2em"}>
                 {" "}

@@ -27,7 +27,6 @@ interface CodeInput {
 }
 
 const runCode = async (data: CodeInput) => {
-  console.log(data);
   return compilerAxios
     .post("/api/compile", JSON.stringify(data), {
       headers: { "Content-Type": "application/json" },
