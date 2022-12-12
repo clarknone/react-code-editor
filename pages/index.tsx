@@ -109,7 +109,7 @@ export default function Home() {
           alignItems={ "center" }
           gap={"2vw"}
           // minHeight={"800px"}
-          height="90vh"
+          minHeight="90vh"
         >
           <Box width="100%" maxWidth={{sm:"46vw"}}>
             <Editor
