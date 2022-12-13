@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CircularProgress,
   IconButton,
   LinearProgress,
@@ -7,6 +8,7 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
@@ -106,12 +108,12 @@ export default function Home() {
         </Stack>
         <Stack
           direction={{ xs: "column", sm: "row" }}
-          alignItems={ "center" }
+          alignItems={"center"}
           gap={"2vw"}
           // minHeight={"800px"}
           minHeight="90vh"
         >
-          <Box width="100%" maxWidth={{sm:"46vw"}}>
+          <Box width="100%" maxWidth={{ sm: "46vw" }}>
             <Editor
               height="90vh"
               defaultValue="#some comment"
@@ -130,12 +132,37 @@ export default function Home() {
             </IconButton>
           </Box>
 
-          <Stack height="90vh" rowGap={"1vmax"} width="100%" maxWidth={{sm:"46vw"}}>
+          <Stack
+            height="90vh"
+            rowGap={"1vmax"}
+            width="100%"
+            maxWidth={{ sm: "46vw" }}
+          >
             <Box flexGrow={1} p={"1em"} border="0.01em solid black">
-              <Typography fontWeight="600" fontSize={"1.2em"}>
-                {" "}
-                Input{" "}
-              </Typography>
+              <Stack>
+                <Stack
+                  direction={"row"}
+                  columnGap="10px"
+                  rowGap="10px"
+                  flexWrap={"wrap"}
+                  justifyContent="space-between"
+                >
+                  <Typography fontWeight="600" fontSize={"1.2em"}>
+                    Input
+                  </Typography>
+                  <Button onClick={() => setUserInput("")}> Clear </Button>
+                </Stack>
+                <Box>
+                  <TextField
+                    fullWidth
+                    multiline
+                    name="userinput"
+                    value={userInput}
+                    minRows={5}
+                    onChange={(e) => setUserInput(e.target.value)}
+                  />
+                </Box>
+              </Stack>
             </Box>
             <Box flexGrow={1} p={"1em"} border="0.01em solid black">
               <Stack rowGap={"1vmax"}>
@@ -147,7 +174,10 @@ export default function Home() {
                     <LinearProgress variant="indeterminate" />
                   ) : (
                     <Box>
-                      <Typography> {apiResponse?.output} </Typography>
+                      <Typography style={{ whiteSpace: "pre-line" }}>
+                        {" "}
+                        {apiResponse?.output}{" "}
+                      </Typography>
                     </Box>
                   )}
                 </Box>
