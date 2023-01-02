@@ -8,6 +8,9 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
+  Step,
+  StepLabel,
+  Stepper,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,7 +20,12 @@ import React, { useState } from "react";
 
 import { FaPlay, FaTimes } from "react-icons/fa";
 import { runCode } from "../service/api";
-import { ApiResponse, LanguageOption } from "../interface/api";
+import {
+  ApiResponse,
+  LanguageOption,
+  QuestionInterface,
+} from "../interface/api";
+import QuestionDisplayComponent from "../component/questionDisplay";
 
 const languages: LanguageOption[] = [
   { title: "Python3", value: "python", compileValue: "python3" },
@@ -33,6 +41,42 @@ const theme = [
 
 let selectedLanguage: LanguageOption = languages[0];
 
+const questions: QuestionInterface[] = [
+  {
+    instruction: "This is to test your basic python skill",
+    name: "Basic",
+    steps: [
+      { title: "Add a comment to your code" },
+      { title: "Name your variable" },
+      { title: "Assign value to your variable" },
+      { title: "Print your variable to the screen" },
+      { title: "Click run an compile" },
+    ],
+  },
+  {
+    instruction: "This is to test your basic python list skill",
+    name: "List",
+    steps: [
+      { title: "Add a comment to your code" },
+      { title: "Create an empty list variable" },
+      { title: "Add two numbers to your list variable" },
+      { title: "Print your list variable to the screen" },
+      { title: "Click run an compile" },
+    ],
+  },
+  {
+    instruction: "This is to test your basic python dictionary skill",
+    name: "Dictionaries",
+    steps: [
+      { title: "Add a comment to your code" },
+      { title: "Create an empty dictionary variable" },
+      { title: "Add two numbers to your dictionary variable" },
+      { title: "Print your dictionary variable to the screen" },
+      { title: "Click run an compile" },
+    ],
+  },
+];
+
 export default function Home() {
   const [config, setConfig] = useState({ language: selectedLanguage.value });
   const [loading, setLoading] = useState(false);
@@ -41,6 +85,8 @@ export default function Home() {
   const [apiResponse, setApiResponse] = useState<ApiResponse>({
     statusCode: 2,
   });
+
+  const [activeQuestion, setActiveQuestion] = useState<number>(0);
 
   // const handleChange = (e: SelectChangeEvent) => {
   //   const { name, value } = e.target;
@@ -88,6 +134,24 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Stack gap={"0.5em"} height={"100vh"} p={"1em"} minHeight="500px">
+        <Stack direction={{ sm: "row" }} alignItems={{ sm: "center" }}>
+          <Typography>Assignment Progress</Typography>
+          <Box flexGrow={1}>
+            <Stepper activeStep={activeQuestion} alternativeLabel>
+              {new Array(questions.length + 1).fill(0).map((item, index) =>
+                index < questions.length ? (
+                  <Step key={`${item}-${index}`}>
+                    <StepLabel>{questions[index].name}</StepLabel>
+                  </Step>
+                ) : (
+                  <Step key={`${item}-${index}`}>
+                    <StepLabel>Complete</StepLabel>
+                  </Step>
+                )
+              )}
+            </Stepper>
+          </Box>
+        </Stack>
         <Box flexGrow={1}>
           <Stack
             direction={{ xs: "column", sm: "row" }}
@@ -105,9 +169,43 @@ export default function Home() {
               bgcolor="#eee"
               p={1}
             >
-              <Typography fontSize={"0.9em"}>
-                Write a python program to display hello using python
-              </Typography>
+              <Stack justifyContent={"center"} width={"100%"} flexGrow={1}>
+                {activeQuestion < questions.length ? (
+                  <Box>
+                    <QuestionDisplayComponent {...questions[activeQuestion]} />
+                  </Box>
+                ) : (
+                  <Box>
+                    <Typography textAlign={"center"}> Completed </Typography>
+                  </Box>
+                )}
+              </Stack>
+              <Stack
+                width={"100%"}
+                direction={"row"}
+                justifyContent="space-between"
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  disableElevation
+                  onClick={() => setActiveQuestion((val) => val - 1)}
+                  disabled={activeQuestion < 1}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  disableElevation
+                  size="small"
+                  onClick={() => setActiveQuestion((val) => val + 1)}
+                  color="primary"
+                  disabled={activeQuestion >= questions.length}
+                >
+                  Next
+                </Button>
+              </Stack>
             </Stack>
             <Stack width="100%" height="100%">
               <Box flexGrow={1}>
@@ -149,6 +247,7 @@ export default function Home() {
                   <Button
                     variant="outlined"
                     disabled={loading}
+                    size="small"
                     onClick={submit}
                   >
                     {loading ? (
@@ -159,7 +258,9 @@ export default function Home() {
                   </Button>
                 </Box>
                 <Box>
-                  <Button variant="outlined"> Debug </Button>
+                  <Button variant="outlined" size="small">
+                    Debug
+                  </Button>
                 </Box>
               </Stack>
             </Stack>

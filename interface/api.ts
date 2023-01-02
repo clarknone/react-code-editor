@@ -6,9 +6,18 @@ export interface ApiResponse {
   cpuTime?: string;
 }
 
-
 export interface LanguageOption {
-    title: string;
-    value: string;
-    compileValue?: string;
-  }
+  title: string;
+  value: string;
+  compileValue?: string;
+}
+
+export interface Step {
+  title: string;
+}
+
+export interface QuestionInterface {
+  instruction: string;
+  name: string;
+  steps: Step[];
+}
