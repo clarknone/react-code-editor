@@ -134,7 +134,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Stack gap={"0.5em"} height={"100vh"} p={"1em"} minHeight="500px">
-        <Stack direction={{ sm: "row" }} alignItems={{ sm: "center" }}>
+        <Stack direction={{ sm: "row" }} maxWidth="50vw" alignItems={{ sm: "center" }}>
           <Typography>Assignment Progress</Typography>
           <Box flexGrow={1}>
             <Stepper activeStep={activeQuestion} alternativeLabel>
